@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pe.cibertec.ProyectoFinal.ApiCurso.dto.CursoDTO;
 import pe.cibertec.ProyectoFinal.ApiCurso.entity.Curso;
+import pe.cibertec.ProyectoFinal.ApiCurso.entity.Turno;
 import pe.cibertec.ProyectoFinal.ApiCurso.service.CursoService;
+import pe.cibertec.ProyectoFinal.ApiCurso.restClient.TurnoRestClient;
 
 @RestController
 @RequestMapping("api/v1/curso")
@@ -24,6 +27,7 @@ public class CursoController {
     
     private CursoService cursoService;
     
+    
     @GetMapping("/findAll")
     
     public ResponseEntity<List<Curso>> findAll() {
@@ -31,6 +35,15 @@ public class CursoController {
         return new ResponseEntity<>(cursoService.findAll(), HttpStatus.OK);
         
     }
+    
+    @GetMapping("/findById/{id}")
+    
+    public ResponseEntity<CursoDTO> findById(@PathVariable Long id) {
+        
+        return new ResponseEntity<>(cursoService.findById(id), HttpStatus.OK);
+        
+    }
+
     
     @GetMapping("/findByCodigo/{codigo}")
     

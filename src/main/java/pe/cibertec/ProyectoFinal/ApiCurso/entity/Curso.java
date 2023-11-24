@@ -16,6 +16,7 @@ public class Curso {
     
     private Long id;
     private String nombre;
+    private String nombreH;
     private Long codigo;
     private String descripcion; 
     

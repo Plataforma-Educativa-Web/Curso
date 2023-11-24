@@ -4,9 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.cibertec.ProyectoFinal.ApiCurso.dao.CursoRepository;
+import pe.cibertec.ProyectoFinal.ApiCurso.dto.CursoDTO;
 import pe.cibertec.ProyectoFinal.ApiCurso.entity.Curso;
+import pe.cibertec.ProyectoFinal.ApiCurso.entity.Turno;
 import pe.cibertec.ProyectoFinal.ApiCurso.exception.EntityNotFoundException;
 import pe.cibertec.ProyectoFinal.ApiCurso.service.CursoService;
+import pe.cibertec.ProyectoFinal.ApiCurso.restClient.TurnoRestClient;
 
 @Service
 
@@ -15,6 +18,11 @@ public class CursoServiceImpl implements CursoService {
     @Autowired
     
     private CursoRepository cursoRepository;
+    
+    @Autowired
+    
+    private TurnoRestClient turnoRestClient;
+    
 
     @Override
     public List<Curso> findAll() {
@@ -23,6 +31,13 @@ public class CursoServiceImpl implements CursoService {
                 
     }
 
+    public List<Turno> findAllTurno() {
+        
+        return (List<Turno>) turnoRestClient.findAllTurno();
+        
+    }
+    
+    
     @Override
     public Curso findByCodigo(Long codigo) {
         
@@ -71,6 +86,25 @@ public class CursoServiceImpl implements CursoService {
         
         cursoRepository.delete(CursoF);
         
+        
+    }
+
+    @Override
+    public CursoDTO findById(Long id) {
+        
+        Curso curso = cursoRepository.findById(id).get();
+        
+        Turno turno = turnoRestClient.findByNombre(curso.getNombreH());
+        
+        CursoDTO cursoDTO = new CursoDTO();
+        
+        cursoDTO.setId(curso.getId());
+        cursoDTO.setNombre(curso.getNombre());
+        cursoDTO.setCodigo(curso.getCodigo());
+        cursoDTO.setDescripcion(curso.getDescripcion());
+        cursoDTO.setTurno(turno);
+                
+        return cursoDTO;
         
     }
     
