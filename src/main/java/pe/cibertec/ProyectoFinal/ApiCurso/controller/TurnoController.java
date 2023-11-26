@@ -1,6 +1,7 @@
 package pe.cibertec.ProyectoFinal.ApiCurso.controller;
 
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import pe.cibertec.ProyectoFinal.ApiCurso.restClient.TurnoRestClient;
 
 @RestController
 @RequestMapping("api/v1/turno")
+@Slf4j
 
 public class TurnoController {
 
@@ -23,7 +25,13 @@ public class TurnoController {
 
     public ResponseEntity<List<Turno>> findAllTurno() {
 
-        return new ResponseEntity<>(turnoRestClient.findAllTurno(), HttpStatus.OK);
+        try {
+            log.info("Obteniendo todos los turnos");
+            return new ResponseEntity<>(turnoRestClient.findAllTurno(), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error al obtener todos los turnos: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 
